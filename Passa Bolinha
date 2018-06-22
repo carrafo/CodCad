@@ -8,62 +8,37 @@ int ultimaColuna(int inf[][2]){
 	return i;
 }
 
-void imprimir(int m[][4]){
-	for(int i=0; i<4 ; i++){
-		for(int j=0; j<4 ; j++)
-			cout<<m[i][j]<<" ";
-		cout<<endl;
-	}
-	cout<<"---------------"<<endl;
-}
-void imprimir(int m[][2]){
-	for(int i=0; i<4 ; i++){
-		for(int j=0; j<2 ; j++)
-			cout<<m[i][j]<<" ";
-		cout<<endl;
-	}
-	cout<<"---------------"<<endl;
-}
-
-
-
 int main(){
 	int n,linha,coluna,l,c,k,cont;
-	cin >>linha >>coluna;
-	int matriz[4][4];
-	int giro[4][4];
-	int inf[4][2];
+	cin >>n >>linha >>coluna;
+	int matriz[n+2][n+2];
+	int giro[n+2][n+2];
+	int inf[n*n][2];
 	
 	memset(inf,-1,sizeof(inf));
 	memset(matriz,0,sizeof(matriz));
 	memset(giro,0,sizeof(giro));
 	cont = 0, l = linha, c = coluna;
 	
-	for(int i=1; i<2+1; i++)
-		for(int j=1; j<2+1; j++)
+	for(int i=1; i<n+1; i++)
+		for(int j=1; j<n+1; j++)
 			cin>> matriz[i][j];
 	
-	imprimir(matriz);
-	int teste=0;
-	while(teste<5 && giro[linha][coluna] != 4){
-		if(giro[l][c] == 4){
+	while(giro[linha][coluna] != 4){
+		if(giro[inf[k][0]][inf[k][1]] == 4){
 			l = inf[k-1][0];
 			c = inf[k-1][1];
 			inf[k][0] = -1;
 			inf[k][1] = -1;
+			k--;
 		}
 		else {
 			k = ultimaColuna(inf);
 			inf[k][0] = l;
 			inf[k][1] = c;
 		}
-		cout<<l<<" "<<c<<endl;
-		imprimir(inf);
-		teste++;
 		
-		while(giro[l][c] != 4){
-			cout<<"X";
-			teste=0;
+		while(true){
 			if(giro[l][c] == 0){
 				if(matriz[l][c] > matriz[l-1][c]) giro[l][c]++;
 				else{
@@ -96,10 +71,16 @@ int main(){
 					break;
 				}
 			}
+			break;
 		}
 	}
-	
-	imprimir(giro);
-	
+	for(int i=0; i<n+2; i++){
+		for(int j=0; j<n+2; j++){
+		    cout <<giro[i][j]<<" ";
+			if(giro[i][j] == 4)cont++;
+		}
+		cout <<endl;
+	}
+	cout<<cont;
 	return 0;
 }
